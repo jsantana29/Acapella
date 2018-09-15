@@ -9,6 +9,10 @@ public class PlayerMove : MonoBehaviour {
 
     private Vector3 finalVelocity = Vector3.zero;
     private Vector3 finalRotation = Vector3.zero;
+    private Vector3 finalCamRotation = Vector3.zero;
+
+    [SerializeField]
+    private Camera mainCam;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +22,7 @@ public class PlayerMove : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         PerformMovement();
+        PerformRotation();
 	}
 
     //Takes in the velocity vector from PlayerController
@@ -32,6 +37,11 @@ public class PlayerMove : MonoBehaviour {
         finalRotation = rotation;
     }
 
+    public void camRotate(Vector3 camRotation)
+    {
+        finalCamRotation = camRotation;
+    }
+
     //Actually performs the movement on the player
     void PerformMovement()
     {
@@ -42,5 +52,12 @@ public class PlayerMove : MonoBehaviour {
     void PerformRotation()
     {
         rb.MoveRotation(rb.rotation * Quaternion.Euler(finalRotation));
+
+        if(mainCam != null)
+        {
+            mainCam.transform.Rotate(-finalCamRotation);
+        }
     }
+
+   
 }
