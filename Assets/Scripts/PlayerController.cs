@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     private float speed = 5;    //brackevs source vid
+    private float lookSensitivity = 3f;
     private PlayerMove motor;
     //Input.GetButton("Horizontal"); ARTIFACT
 
@@ -27,6 +28,15 @@ public class PlayerController : MonoBehaviour {
         Vector3 velocity = (moveSide + moveFront).normalized * speed;
 
         //move 
-       motor.Move(velocity);
+        motor.Move(velocity);
+
+        //Calculate rotation as a 3D vector
+        float yRotation = Input.GetAxisRaw("Mouse X");
+        
+        //Sets horizontal rotation with a look sensitivity
+        Vector3 rotation = new Vector3(0f, yRotation, 0f) * lookSensitivity;
+
+        //Applies rotation
+        motor.Rotate(rotation);
     }
 }
