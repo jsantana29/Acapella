@@ -6,12 +6,10 @@ public class BulletController : MonoBehaviour {
 
     
     private Material material;
-    
 
 	// Use this for initialization
 	void Start () {
         //material.color = Color.red;
-        
 	}
 	
 	// Update is called once per frame
