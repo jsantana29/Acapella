@@ -7,7 +7,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float speed = 5; 
     //brackevs source vid
+    [SerializeField]
     private float lookSensitivity = 3f;
+
     float nextFire = 0.0f;
     public float firerate = 0.5f;
     public int bulletSpeed = 5;
