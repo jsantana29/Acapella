@@ -13,6 +13,9 @@ public class PlayerMove : MonoBehaviour {
     private Vector3 finalJumpVelocity = Vector3.zero;
 
     [SerializeField]
+    private float jumpHeight = 10f;
+
+    [SerializeField]
     private Camera mainCam;
 
 	// Use this for initialization
