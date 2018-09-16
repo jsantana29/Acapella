@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    private float speed = 5;    //brackevs source vid
+    [SerializeField]
+    private float speed = 5; 
+    //brackevs source vid
     private float lookSensitivity = 3f;
     float nextFire = 0.0f;
     public float firerate = 0.5f;
@@ -20,6 +22,9 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private GameObject bullet;
+
+    [SerializeField]
+    private GameObject AR;
 
     [SerializeField]
     private Camera camera;
@@ -61,6 +66,8 @@ public class PlayerController : MonoBehaviour {
         motor.rotate(rotation);
         motor.camRotate(camRotation);
 
+        //AR.transform.Rotate(-camRotation);
+
 
         //Checks for input from left mouse button
         //Shoots based on fire rate
@@ -82,6 +89,8 @@ public class PlayerController : MonoBehaviour {
         var firedBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
         firedBullet.GetComponent<Rigidbody>().velocity = (firedBullet.transform.forward + camera.transform.forward) * bulletSpeed;
         nextFire = Time.time + firerate;
+
+        Destroy(firedBullet, 2f);
     }
 
     
