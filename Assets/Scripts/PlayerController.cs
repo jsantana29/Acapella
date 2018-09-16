@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    private float speed = 5;    //brackevs source vid
+    [SerializeField]
+    private float speed = 5; 
+    //brackevs source vid
     private float lookSensitivity = 3f;
+    float nextFire = 0.0f;
+    public float firerate = 0.5f;
+    public int bulletSpeed = 5;
+    public float jumpHeight = 10f;
+
+
 
     private PlayerMove motor;
 
@@ -14,6 +22,12 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private GameObject bullet;
+
+    [SerializeField]
+    private GameObject AR;
+
+    [SerializeField]
+    private Camera camera;
     //Input.GetButton("Horizontal"); ARTIFACT
 
 	// Use this for initialization
@@ -38,7 +52,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 velocity = (moveSide + moveFront).normalized * speed;
 
         //move 
-        motor.Move(velocity);
+        motor.move(velocity);
 
         //Calculate rotation as a 3D vector
         float yRotation = Input.GetAxisRaw("Mouse X");
@@ -49,12 +63,35 @@ public class PlayerController : MonoBehaviour {
         Vector3 camRotation = new Vector3(xRotation, 0f, 0f) * lookSensitivity;
 
         //Applies rotation
-        motor.Rotate(rotation);
+        motor.rotate(rotation);
         motor.camRotate(camRotation);
 
-        if (Input.GetButton("Fire1"))
+        //AR.transform.Rotate(-camRotation);
+
+
+        //Checks for input from left mouse button
+        //Shoots based on fire rate
+        if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
-            Instantiate(bullet, firePoint.position, Quaternion.Euler(rotation));
+            shootBullet(rotation);
+        }
+
+        if (Input.GetButton("Jump"))
+        {
+            Vector3 jumpVelocity = new Vector3(0f, jumpHeight, 0f);
+            motor.playerJump(jumpVelocity);
         }
     }
+
+    //Actually shoots bullet
+    void shootBullet(Vector3 rotation)
+    {
+        var firedBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
+        firedBullet.GetComponent<Rigidbody>().velocity = (firedBullet.transform.forward + camera.transform.forward) * bulletSpeed;
+        nextFire = Time.time + firerate;
+
+        Destroy(firedBullet, 2f);
+    }
+
+    
 }

@@ -10,6 +10,10 @@ public class PlayerMove : MonoBehaviour {
     private Vector3 finalVelocity = Vector3.zero;
     private Vector3 finalRotation = Vector3.zero;
     private Vector3 finalCamRotation = Vector3.zero;
+    private Vector3 finalJumpVelocity = Vector3.zero;
+
+    [SerializeField]
+    private float jumpHeight = 10f;
 
     [SerializeField]
     private Camera mainCam;
@@ -21,18 +25,20 @@ public class PlayerMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        PerformMovement();
-        PerformRotation();
+        performMovement();
+        performRotation();
+
+        
 	}
 
     //Takes in the velocity vector from PlayerController
-    public void Move(Vector3 velocity)
+    public void move(Vector3 velocity)
     {
         finalVelocity = velocity;
     }
 
     //Takes in the rotation vector from PlayerMove
-    public void Rotate(Vector3 rotation)
+    public void rotate(Vector3 rotation)
     {
         finalRotation = rotation;
     }
@@ -42,14 +48,20 @@ public class PlayerMove : MonoBehaviour {
         finalCamRotation = camRotation;
     }
 
+    public void playerJump(Vector3 jumpVelocity)
+    {
+        finalJumpVelocity = jumpVelocity;
+        performJump();
+    }
+
     //Actually performs the movement on the player
-    void PerformMovement()
+    void performMovement()
     {
         rb.MovePosition(rb.position + finalVelocity * Time.fixedDeltaTime);
     }
 
     //Actually performs the rotation on the player
-    void PerformRotation()
+    void performRotation()
     {
         rb.MoveRotation(rb.rotation * Quaternion.Euler(finalRotation));
 
@@ -57,6 +69,11 @@ public class PlayerMove : MonoBehaviour {
         {
             mainCam.transform.Rotate(-finalCamRotation);
         }
+    }
+
+    void performJump()
+    {
+        rb.MovePosition(rb.position + finalJumpVelocity * Time.fixedDeltaTime);
     }
 
    
